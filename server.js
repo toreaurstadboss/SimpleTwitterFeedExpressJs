@@ -1,5 +1,6 @@
 var express = require("express");
 var request = require("request");
+let config = require("./config");
 const https = require("https");
 const fs = require("fs");
 var url = require("url");
@@ -15,12 +16,7 @@ var options = {
 
 var app = express();
 
-var client = new Twitter({
-  consumer_key: "SOME_SECRET",
-  consumer_secret: "SOME_SECRET_2",
-  access_token_key: "SOME_SECRET_3",
-  access_token_secret: "SOME_SECRET_4"
-});
+var client = new Twitter(config);
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
@@ -39,6 +35,8 @@ function getTweets(userName, tweetCount, res) {
   // Initiate your search using the above paramaters
   client.get("search/tweets", params, function(err, data, response) {
     console.log("Found # Tweets: " + data.statuses.length);
+    res.charset = "utf-8";
+    res.append("Content-Type", "application/json; charset=utf-8");
 
     // If there is no error, proceed
     if (!err) {
