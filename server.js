@@ -56,3 +56,5 @@ var server = https.createServer(options, app);
 server.listen(port, () => {
   console.log("server starting on port: " + port);
 });
+
+module.exports = server;
